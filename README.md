@@ -9,7 +9,7 @@ The concept of FM custom pre and post action scripts for RAC DBs therefore is th
 
 This repository contains a sample pre and post action script for RAC environments which contains the needed logic and provides a framework which allows to add any further needed custom changes during RAC patching.
 
-The actual script can be found in the [script](./script/) folder, the documentation for it is [here](./docs/).
+The actual script can be found in the [script](./script/) folder, the documentation for it in the [docs](./docs/) folder.
 
 ## Contributing
 
