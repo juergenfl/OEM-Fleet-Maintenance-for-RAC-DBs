@@ -1,0 +1,6 @@
+# files which should get ignored by git
+#
+# Syntax:
+#
+# *.txt
+#
