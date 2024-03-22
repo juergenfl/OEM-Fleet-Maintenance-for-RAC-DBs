@@ -7,7 +7,7 @@ to include [pre and post actions](https://docs.oracle.com/en/enterprise-manager/
   
 The concept of FM custom pre and post action scripts for RAC DBs therefore is the following: The pre and post action scripts will be called only on one cluster node and the scripts itselves must contain the logic to determine on which nodes it needs to get run.
 
-This repository contains a sample pre and post action script for RAC environments which contains the needed logic and provides a framework which allows to add any further needed custom changes during RAC patching.
+This repository contains a sample pre and post action script for RAC environments which contains the needed logic and provides a framework which easily allows to add any further needed custom changes during RAC patching.
 
 The actual script can be found in the [script](./script/) folder, the documentation for it in the [docs](./docs/) folder.
 
