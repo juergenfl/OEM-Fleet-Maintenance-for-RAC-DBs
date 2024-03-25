@@ -1,11 +1,9 @@
 How to use Pre and Post Scripts for Fleet Maintenance Operations
 
 # Introduction
-
-In order to support automated maintenance activities for different Fleet Maintenance (FM) operations, Oracle Enterprise Manager allows support for configuring custom Pre/Post action scripts for different operations. The pre/post scripts need to be uploaded as EM Software Library Entity(Directive) prior to their usage with FM operations. All details can be found [here](https://docs.oracle.com/en/enterprise-manager/cloud-control/enterprise-manager-cloud-control/13.5/emlcm/database-fleet-maintenance.html#GUID-6AF19CA9-E83A-4C76-BF50-16E5A072EF92) in the documentation, but we will go through the needed steps below.
+In order to support automated maintenance activities for different Fleet Maintenance (FM) operations, Oracle Enterprise Manager allows support for configuring custom Pre/Post action scripts for different operations. The pre/post scripts need to be uploaded as EM Software Library Entity(Directive) prior to their usage with FM operations. All details can be found [here](https://docs.oracle.com/en/enterprise-manager/cloud-control/enterprise-manager-cloud-control/13.5/emlcm/database-fleet-maintenance.html#GUID-6AF19CA9-E83A-4C76-BF50-16E5A072EF92) in the documentation, but we will summarize the needed steps below as well.
 
 # Getting started with the provided script
-
 The bash script [FM_pre-post-actions.sh](../script/FM_pre-post-actions.sh) can be seen as kind of reference implementation for Pre/Post action scripts for RAC DB environments. I did create it for RAC environments with several special customizations in place due to existing configs still needed by legacy applications and scripts. 
 
 Here is an example describing a simple use case:
@@ -32,5 +30,8 @@ PREPATCH=false
 That's how to get the Pre and Post action script out of the provided one.
 
 # Uploading the Pre and Post action scripts to the Software Library
-
 In the OEM Console, select the Software Library:
+
+    ![Software-Library.png](images/Software-Library.png)
+    
+    
