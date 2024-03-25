@@ -2,14 +2,35 @@
 
 ## Introduction
 
-In order to support automated maintenance activities for different Fleet Maintenance (FM) operations, Oracle Enterprise Manager allows support for configuring custom Pre/Post scripts for different operations. There pre/post scripts need to be uploaded as EM Software Library Entity(Directive) prior to their usage with FM operations. All details can be found [here](https://docs.oracle.com/en/enterprise-manager/cloud-control/enterprise-manager-cloud-control/13.5/emlcm/database-fleet-maintenance.html#GUID-6AF19CA9-E83A-4C76-BF50-16E5A072EF92) in the documentation.
+In order to support automated maintenance activities for different Fleet Maintenance (FM) operations, Oracle Enterprise Manager allows support for configuring custom Pre/Post action scripts for different operations. The pre/post scripts need to be uploaded as EM Software Library Entity(Directive) prior to their usage with FM operations. All details can be found [here](https://docs.oracle.com/en/enterprise-manager/cloud-control/enterprise-manager-cloud-control/13.5/emlcm/database-fleet-maintenance.html#GUID-6AF19CA9-E83A-4C76-BF50-16E5A072EF92) in the documentation, but we will go through the needed steps below.
 
 ## Getting started with the provided script
 
-The bash script [FM_pre-post-actions.sh](../script/FM_pre-post-actions.sh) can be seen as kind of reference implementation for Pre-/Post-actionscripts for RAC DB environments. I did create it for RAC environments with several special customizations in place due to existing configs still needed by legacy applications and scripts.
+The bash script [FM_pre-post-actions.sh](../script/FM_pre-post-actions.sh) can be seen as kind of reference implementation for Pre/Post action scripts for RAC DB environments. I did create it for RAC environments with several special customizations in place due to existing configs still needed by legacy applications and scripts. 
 
-Here is an example:
+Here is an example describing a simple use case:
 
-The <samp>listener.ora</samp> file actually used on RAC nodes is the one located at <samp>\$GI_HOME/network/admin/listener.ora</samp>. Now, let's assume that there are DB related scripts (leftovers from the time where the DB was running on a standalone server) which still expect the <samp>listener.ora</samp> file at <samp>\$DB_HOME/network/admin/listener.ora</samp>. The workaround used for that is to have a symbolic link <samp>\$DB_HOME/network/admin/listener.ora -> \$GI_HOME/network/admin/listener.ora</samp> in place.
+The `listener.ora` file actually used on RAC nodes is the one located at `$GI_HOME/network/admin/listener.ora`. Now, let's assume that there are DB related scripts (leftovers from the time where the DB was running on a standalone server) which still expect the `listener.ora` file at `$DB_HOME/network/admin/listener.ora`. The workaround used for that is to have a symbolic link `$DB_HOME/network/admin/listener.ora -> $GI_HOME/network/admin/listener.ora` in place.
 
-Since <samp>GI_HOME</samp> and <samp>DB_HOME</samp> get updated independently by different FM operations, an <samp>UPDATE_GI</samp> post action would need to update the symbolic link in <samp>\$DB_HOME/network/admin/</samp> since this is completely out of scope for the generic <samp>UPDATE_GI</samp> procedures. The same of course for a possible <samp>ROLLBACK_GI</samp> operation.
+Since `GI_HOME` and `DB_HOME` get updated independently by different FM operations, an `UPDATE_GI` post action would need to update the symbolic link in `$DB_HOME/network/admin/` because this is completely out of scope for the normal `UPDATE_GI` procedures. There focus is to update the cluster software from and `OLD_GI_HOME` to a `NEW_GI_HOME` unrelated to the actual RAC DBs running on that cluster. The same of course would be needed for a possible `ROLLBACK_GI` operation.
+
+The provided script contains several solutions for such special use cases which were critical to address when I created it a while ago. They should be seen just as samples or templates for creating your own needed solution.
+
+To make development and maintenance of the script easier I decided to use just one single script for all needed pre and post actions since the procedures usually are very similar and are using almost the same code e.g. to stop or start services or perform other needed config changes.
+
+To make the script behaving as pre action script, you can see right at the top of the script the line
+
+```
+PREPATCH=true
+```
+
+To make the script acting as post action script, create a copy of it and set the paramter `PREPATCH` to `false` like here:
+
+```
+PREPATCH=false
+```
+That's how to get the Pre and Post action script out of the provided one.
+
+## Uploading the two scripts to the EM Software Library
+
+
