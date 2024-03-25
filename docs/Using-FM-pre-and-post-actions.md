@@ -30,8 +30,97 @@ PREPATCH=false
 That's how to get the Pre and Post action script out of the provided one.
 
 # Uploading the Pre and Post action scripts to the Software Library
-In the OEM Console, select the Software Library:
+ 1. In the OEM Console, select the Software Library:
 
-    ![Software-Library.png](images/Software-Library.png)
+ ![Software-Library.png](images/Software-Library.png)
     
+ 2. Follow the [official documentation](https://docs.oracle.com/en/enterprise-manager/cloud-control/enterprise-manager-cloud-control/13.5/emlcm/database-fleet-maintenance.html#GUID-8DBB0F4B-A508-4B90-BEE6-417A326CFC56) to create a new folder for example named `Custom-FM-Scripts` and create two items of type `Directives` in it by selecting each file and using a `Shell Type` of `Bash` for them:
+
+ ![Uploaded-Scripts.png](images/Uploaded-Scripts.png)
+
+ 3. Use UI menu View / Columns / Manage Columns to add the column `Internal ID`. This will allow you to select and save the script URNs for later usage:
+
+ ![Script-URNs.png](images/Script-URNs.png)
+
+ 4. Submit a fleet maintenance operation using `emcli` like here:
+
+ ```
+ $ cat fm_update_gi.txt
+ NEW_ORACLE_HOME_LIST=/u01/app/gi/19.21.0.0
+ workingDir=/u01/tmp
+ dispatchLoc=/u01/tmp/rootactions
+ SKIP_PREREQUISITE_CHECKS=true
+ SKIP_CVU_CHECK=true
+ PREREQS_ONLY=false
+ CUSTOM_PRE_SCRIPTS_URN=oracle:defaultService:em:provisioning:1:cmp:COMP_Directives:none:E693E73790ED604AE0530F1BAA0AD8F5:0.6
+ CUSTOM_POST_SCRIPTS_URN=oracle:defaultService:em:provisioning:1:cmp:COMP_Directives:none:E693E73790EF604AE0530F1BAA0AD8F5:0.6
+
+
+ $ emcli db_software_maintenance -performOperation -name="Update GI" -purpose=UPDATE_GI \
+ -target_type=cluster -target_list="jfrac-cluster" \
+ -normal_credential="ORACLE_OS:SYSMAN" -privilege_credential="ROOT_OS:SYSMAN" \
+ -input_file="data:fm_update_gi.txt"
+ ``` 
+ 
+ 5. Use UI menu Enterprise / Provisioning and Patching / Procedure Activity to get details of the job log:   
+
+ ```
+ .....
+ The output of the directive is:
+
+ Running script on node jfrac-2.localdomain
+ All files from this run can be found here: /u01/app/oracle/FM-pre-post-actions/UPDATE_GI_27720
+ Performing UPDATE_GI post-patch actions
+ Setting up environment
+ OLD_GI_HOME = /u01/app/gi/19.15.0.0
+ NEW_GI_HOME = /u01/app/gi/19.21.0.0
+
+ Running: verify/fix TFA config to ensure that it is running from NEW GI HOME
+
+ TFA config looks good!
+
+ Done with: verify/fix TFA config to ensure that it is running from NEW GI HOME
+
+ Running: verifying listener.ora fix
+
+ ls -l /u02/app/oracle/product/19.15.0.0/dbhome_1/network/admin/listener.ora
+ lrwxrwxrwx. 1 oracle oinstall 47 Mar 18 19:33 /u02/app/oracle/product/19.15.0.0/dbhome_1/network/admin/listener.ora -> /u01/app/gi/19.21.0.0/network/admin/listener.ora
+ ls -lL /u02/app/oracle/product/19.15.0.0/dbhome_1/network/admin/listener.ora
+ -rw-r--r--. 1 oracle oinstall 1947 Mar 18 19:36 /u02/app/oracle/product/19.15.0.0/dbhome_1/network/admin/listener.ora
+
+ Done with: verifying listener.ora fix
+
+ done with all actions on node jfrac-2.localdomain
+
+ Running script on node jfrac-1.localdomain
+ All files from this run can be found here: /u01/app/oracle/FM-pre-post-actions/UPDATE_GI_31733
+ Performing UPDATE_GI post-patch actions
+ Setting up environment
+ OLD_GI_HOME = /u01/app/gi/19.15.0.0
+ NEW_GI_HOME = /u01/app/gi/19.21.0.0
+
+ Running: verify/fix TFA config to ensure that it is running from NEW GI HOME
+
+ TFA config looks good!
+
+ Done with: verify/fix TFA config to ensure that it is running from NEW GI HOME
+
+ Running: verifying listener.ora fix
+
+ ls -l /u02/app/oracle/product/19.15.0.0/dbhome_1/network/admin/listener.ora
+ lrwxrwxrwx. 1 oracle oinstall 47 Mar 18 19:33 /u02/app/oracle/product/19.15.0.0/dbhome_1/network/admin/listener.ora -> /u01/app/gi/19.21.0.0/network/admin/listener.ora
+ ls -lL /u02/app/oracle/product/19.15.0.0/dbhome_1/network/admin/listener.ora
+ -rw-r--r--. 1 oracle oinstall 1902 Mar 18 19:47 /u02/app/oracle/product/19.15.0.0/dbhome_1/network/admin/listener.ora
+
+ Done with: verifying listener.ora fix
+
+ done with all actions on node jfrac-1.localdomain
+ .....
+ ```
+
+ In the above example log from a post action run, two actions/procedures where called on each cluster node:
+  * `verify/fix TFA config to ensure that it is running from NEW GI HOME`
+  * `verifying listener.ora fix`
     
+ I will drill down in document [How to add your own procedures to the script](./Adding-own-procedures-to-the-actionscript.md) in more detail into the script structure and how the various actions/procedures will be called.
+ 
