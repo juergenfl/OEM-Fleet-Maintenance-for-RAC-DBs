@@ -272,7 +272,7 @@ setup_env_UPDATE_RACDB(){
 
     # We will use $target_name to determine DB_NAME
     #
-    # Example: $target_name=czcholsint2485/6_FLEETRAC where DB NAME is FLEETRAC  
+    # Example: $target_name=jfdbserver_FLEETRAC where DB NAME is FLEETRAC  
     DB_NAME=$(echo $target_name | cut -d_ -f2)
     DB_SERVICE_NAME="ora.${DB_NAME,,}.db"      # ensure to convert DB_NAME to lowercase
     
@@ -293,7 +293,7 @@ setup_env_ROLLBACK_RACDB_prepatch(){
 
     # We will use $target_name to determine DB_NAME
     #
-    # Example: $target_name=czcholsint2485/6_FLEETRAC where DB NAME is FLEETRAC  
+    # Example: $target_name=jfdbserver_FLEETRAC where DB NAME is FLEETRAC  
     DB_NAME=$(echo $target_name | cut -d_ -f2)
     DB_SERVICE_NAME="ora.${DB_NAME,,}.db"      # ensure to convert DB_NAME to lowercase
 
@@ -321,7 +321,7 @@ setup_env_ROLLBACK_RACDB_postpatch(){
 
     # We will use $target_name to determine DB_NAME
     #
-    # Example: $target_name=czcholsint2485/6_FLEETRAC where DB NAME is FLEETRAC  
+    # Example: $target_name=jfdbserver_FLEETRAC where DB NAME is FLEETRAC  
     DB_NAME=$(echo $target_name | cut -d_ -f2)
     DB_SERVICE_NAME="ora.${DB_NAME,,}.db"    # ensure to convert DB_NAME to lowercase
 
@@ -798,8 +798,8 @@ check_olr_loc_config(){
     # Example from a broken file after performing ROLLBACK_GI:
     #
     # /etc/oracle$ cat olr.loc
-    # olrconfig_loc=/oracle/u01/gi/18.7.0.ONEOFF/cdata/czcholsint2485.olr
-    # crs_home=/oracle/u01/gi/18.4.0
+    # olrconfig_loc=/u01/gi/18.7.0.ONEOFF/cdata/jfrac-1.olr
+    # crs_home=/u01/gi/18.4.0
     # orplus_config=FALSE
     #
     # File olr.loc is owned by root user. We will add an entry to ROOT_SH in case
