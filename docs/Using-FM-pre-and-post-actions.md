@@ -10,7 +10,7 @@ Here is an example describing a simple use case:
 
 The `listener.ora` file actually used on RAC nodes is the one located at `$GI_HOME/network/admin/listener.ora`. Now, let's assume that there are DB related scripts (leftovers from the time where the DB was running on a standalone server) which still expect the `listener.ora` file at `$DB_HOME/network/admin/listener.ora`. The workaround used for that is to have a symbolic link `$DB_HOME/network/admin/listener.ora -> $GI_HOME/network/admin/listener.ora` in place.
 
-Since `GI_HOME` and `DB_HOME` get updated independently by different FM operations, an `UPDATE_GI` post action could be to update the symbolic link in `$DB_HOME/network/admin/` because this will not be done by the normal `UPDATE_GI` procedures. There focus is to update the cluster software from and `OLD_GI_HOME` to a `NEW_GI_HOME` unrelated to the actual RAC DBs running on that cluster. The same of course would be needed for a possible `ROLLBACK_GI` operation.
+Since `GI_HOME` and `DB_HOME` get updated independently by different FM operations, an `UPDATE_GI` post action could be to update the symbolic link in `$DB_HOME/network/admin/` because this will not be done by the normal `UPDATE_GI` procedures. There focus is to update the cluster software from an `OLD_GI_HOME` to a `NEW_GI_HOME` unrelated to the actual RAC DBs running on that cluster. The same of course would be needed for a possible `ROLLBACK_GI` operation.
 
 The provided script contains several solutions for such special use cases which were critical to address when I created it a while ago. They should be seen just as samples or templates for creating your own needed solution.
 
