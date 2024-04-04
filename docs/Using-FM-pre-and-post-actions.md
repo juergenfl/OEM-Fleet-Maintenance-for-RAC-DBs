@@ -34,7 +34,7 @@ That's how to get the Pre and Post action script out of the provided one.
 
  ![Software-Library.png](images/Software-Library.png)
     
- 2. Follow the [official documentation](https://docs.oracle.com/en/enterprise-manager/cloud-control/enterprise-manager-cloud-control/13.5/emlcm/database-fleet-maintenance.html#GUID-8DBB0F4B-A508-4B90-BEE6-417A326CFC56) to create a new folder for example named `Custom-FM-Scripts` and create two items of type `Directives` in it by selecting each file and using a `Shell Type` of `Bash` for them:
+ 2. Follow the [official documentation](https://docs.oracle.com/en/enterprise-manager/cloud-control/enterprise-manager-cloud-control/13.5/emlcm/custom-and-scripts-fleet-operations.html#GUID-6AF19CA9-E83A-4C76-BF50-16E5A072EF92) to create a new folder for example named `Custom-FM-Scripts` and create two items of type `Directives` in it by selecting each file and using a `Shell Type` of `Bash` for them:
 
  ![Uploaded-Scripts.png](images/Uploaded-Scripts.png)
 
