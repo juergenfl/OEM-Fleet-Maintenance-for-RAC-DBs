@@ -4,7 +4,7 @@
 
 Fleet Maintenance (FM) focuses on procedures to standardize database environments by automatically patching and upgrading a large number of databases without application downtime for RAC databases. FM includes [pre and post actions](https://docs.oracle.com/en/enterprise-manager/cloud-control/enterprise-manager-cloud-control/13.5/emlcm/custom-and-scripts-fleet-operations.html) to handle custom configuration changes not adressed by out-of-the-box FM procedures. Clustered environments such as RAC database present unique challenges for patching and upgrading. This is because some configuration changes needs to be applied on all cluster nodes, while others require applying to ethier the first node or the last node. Careful coordination is needed to address these dependancies before patching a RAC Cluster.
   
-The concept of Fleet Maintenance custom pre and post action scripts for RAC DBs are designed to run on one cluster node. The scripts will contain the logic to determine which nodes it will need to run on.
+The concept of FM custom pre and post action scripts for RAC DBs are designed to run on one cluster node. The scripts will contain the logic to determine which nodes it will need to run on.
 
 This repository contains a sample pre and post action script for RAC environments which contains the needed logic and provides a framework which can easily be configured to add any further custom changes during RAC patching.
 
